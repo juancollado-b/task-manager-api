@@ -1,0 +1,16 @@
+{
+  "name": "task-manager",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Juan Collado",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^3.3.2",
+    "mongoose": "^5.8.0",
+    "validator": "^12.1.0"
+  }
+}
