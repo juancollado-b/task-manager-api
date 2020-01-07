@@ -39,6 +39,25 @@ app.get('/users/:id', async (req, res) => {
     }
 })
 
+app.patch('/users/:id', async (req, res) => {
+    const _id = req.params.id,
+        updates = Object.keys(req.body),
+        allowedUpdates = ['name', 'email', 'password', 'age'],
+        isValid = updates.every((update) => allowedUpdates.includes(update))
+
+    if (!isValid) {
+        return res.status(400).send('Update not allowed')
+    }
+
+    try {
+        const user = await User.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true})
+
+        res.send(user)
+    } catch(e) {
+        res.status(400).send(e)
+    }
+})
+
 app.post('/tasks', async (req, res) => {
     const task = new Task(req.body)
 
@@ -67,6 +86,25 @@ app.get('/tasks/:id', async (req,res) => {
         res.send(task)
     } catch (e) {
         res.status(404).send('Task not found')
+    }
+})
+
+app.patch('/tasks/:id', async (req, res) => {
+    const _id = req.params.id,
+        updates = Object.keys(req.body),
+        allowedUpdates = ['description', 'completed'],
+        isValid = updates.every((update) => allowedUpdates.includes(update))
+
+    if (!isValid) {
+        return res.status(400).send('Update not allowed')
+    }
+
+    try {
+        const task = await Task.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true})
+
+        res.send(task)
+    } catch(e) {
+        res.status(400).send(e)
     }
 })
 
