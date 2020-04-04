@@ -26,6 +26,29 @@ router.post('/users/login', async (req,res) => {
     }
 })
 
+router.post('/users/logout', auth, async (req, res) => {
+    try {
+        req.user.tokens = req.user.tokens.filter((token)=> {
+            return token.token !== req.token
+        })
+        await req.user.save()
+        res.status(200).send('User logout')
+    } catch (e) {
+        res.status(500).send(e)
+    }
+})
+
+router.post('/users/logoutAll', auth, async (req,res) => {
+  try {
+    req.user.tokens = []
+    await req.user.save()
+
+    res.status(200).send('User logout of all devices.')
+  } catch (e) {
+    res.status(500).send(e)
+  }
+})
+
 router.get('/users/me', auth, async (req,res) => {
     res.send(req.user)
 })
@@ -67,7 +90,7 @@ router.delete('/users/:id', async (req, res) => {
     try {
         const _id = req.params.id
         console.log(_id);
-        
+
         const user = await User.findByIdAndDelete(_id)
 
         res.send(user)
