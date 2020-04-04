@@ -53,20 +53,8 @@ router.get('/users/me', auth, async (req,res) => {
     res.send(req.user)
 })
 
-router.get('/users/:id', async (req, res) => {
-    const _id = req.params.id
-
-    try {
-        const user = await User.findById(_id)
-        res.send(user)
-    } catch (e) {
-        res.status(404).send('User not found')
-    }
-})
-
-router.patch('/users/:id', async (req, res) => {
-    const _id = req.params.id,
-        updates = Object.keys(req.body),
+router.patch('/users/me', auth, async (req, res) => {
+    const updates = Object.keys(req.body),
         allowedUpdates = ['name', 'email', 'password', 'age'],
         isValid = updates.every((update) => allowedUpdates.includes(update))
 
@@ -75,27 +63,21 @@ router.patch('/users/:id', async (req, res) => {
     }
 
     try {
-        const user = await User.findById(_id)
+        updates.forEach(update => req.user[update] = req.body[update])
+        await req.user.save()
 
-        updates.forEach(update => user[update] = req.body[update])
-        await user.save()
-
-        res.send(user)
+        res.send(req.user)
     } catch(e) {
         res.status(400).send(e)
     }
 })
 
-router.delete('/users/:id', async (req, res) => {
+router.delete('/users/me', auth, async (req, res) => {
     try {
-        const _id = req.params.id
-        console.log(_id);
-
-        const user = await User.findByIdAndDelete(_id)
-
-        res.send(user)
+        await req.user.remove()
+        res.status(200).send('User deleted')
     } catch (e) {
-        res.status(400).send(e)
+        res.status(500).send()
     }
 })
 
