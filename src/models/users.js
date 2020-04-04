@@ -49,6 +49,16 @@ const userSchema = new mongoose.Schema({
     }]
 })
 
+userSchema.methods.toJSON = function () {
+  const user = this
+  const userObject = user.toObject()
+
+  delete userObject.password
+  delete userObject.tokens
+
+  return userObject
+}
+
 userSchema.methods.generateAuthToken = async function () {
     const user = this
 
@@ -72,7 +82,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
     if (!isMatch) {
         throw new Error('Email or password incorect')
     }
-    
+
     return user
 }
 
