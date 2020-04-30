@@ -29,3 +29,10 @@ test('Login', async () => {
         password: userOne.password
     }).expect(200)
 })
+
+test('Login (error)', async () => {
+    await request(app).post('/users/login').send({
+        email: userOne.email,
+        password: 'badpassword'
+    }).expect(400)
+})
