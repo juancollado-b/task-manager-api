@@ -37,7 +37,7 @@ test('Login', async () => {
     }).expect(200)
 })
 
-test('Login (error)', async () => {
+test('Login [error]', async () => {
     await request(app).post('/users/login').send({
         email: userOne.email,
         password: 'badpassword'
@@ -50,4 +50,11 @@ test('Get user profile', async ()=> {
     .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
     .send()
     .expect(200)
+})
+
+test('Get user profile [auth error]', async ()=> {
+    await request(app)
+    .get('/users/me')
+    .send()
+    .expect(401)
 })
