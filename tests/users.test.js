@@ -2,8 +2,16 @@ const request = require('supertest'),
     app = require('../src/app'),
     User = require('../src/models/users')
 
+const userOne = {
+    name: 'Juan',
+    age: 18,
+    email: 'juan@email.com',
+    password: 'hello123!$'
+}
+
 beforeEach(async ()=> {
     await User.deleteMany()
+    await new User(userOne).save()
 })
     
 test('SignUp', async () => {
