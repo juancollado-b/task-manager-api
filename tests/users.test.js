@@ -65,3 +65,9 @@ test('Delete user', async ()=> {
     .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
     .expect(200)
 })
+
+test('Delete user [auth error]', async ()=> {
+    await request(app)
+    .delete('/users/me')
+    .expect(401)
+})
