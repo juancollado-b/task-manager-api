@@ -43,3 +43,11 @@ test('Login (error)', async () => {
         password: 'badpassword'
     }).expect(400)
 })
+
+test('Get user profile', async ()=> {
+    await request(app)
+    .get('/users/me')
+    .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+    .send()
+    .expect(200)
+})
