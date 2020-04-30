@@ -58,3 +58,10 @@ test('Get user profile [auth error]', async ()=> {
     .send()
     .expect(401)
 })
+
+test('Delete user', async ()=> {
+    await request(app)
+    .delete('/users/me')
+    .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+    .expect(200)
+})
