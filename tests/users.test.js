@@ -84,6 +84,9 @@ test('Delete user', async ()=> {
     .delete('/users/me')
     .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
     .expect(200)
+    
+    const user = await User.findById(userOne._id)
+    expect(user).toBeNull()
 })
 
 test('Delete user [auth error]', async ()=> {
