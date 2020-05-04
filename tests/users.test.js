@@ -94,3 +94,14 @@ test('Delete user [auth error]', async ()=> {
     .delete('/users/me')
     .expect(401)
 })
+
+test('Upload avatar images', async ()=> {
+    await request(app)
+    .post('/users/me/avatar')
+    .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+    .attach('avatar', 'tests/fixtures/profilePic.png')
+    expect(200)
+    
+    const user = await User.findById(userOne._id)
+    expect(user.avatar).toEqual(expect.any(Buffer))
+})
