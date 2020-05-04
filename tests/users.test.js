@@ -105,3 +105,15 @@ test('Upload avatar images', async ()=> {
     const user = await User.findById(userOne._id)
     expect(user.avatar).toEqual(expect.any(Buffer))
 })
+
+test(`Update user's fileds`, async () => {
+    await request(app)
+    .patch('/users/me')
+    .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+    .send({name: 'Ramiro',email:'ramita@email.com'})
+    .expect(200)
+    
+    const user = await User.findById(userOneId)
+    expect(user.name).toBe('Ramiro')
+    expect(user.email).toBe('ramita@email.com')
+})
