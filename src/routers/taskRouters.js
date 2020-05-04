@@ -94,18 +94,16 @@ router.patch('/tasks/:id', auth, async (req, res) => {
 
 router.delete('/tasks/:id', auth, async (req, res) => {
     try {
-
       const task = await Task.findOne({_id: req.params.id, owner: req.user._id})
 
       if (!task) {
-        res.status(404).send({error: 'Task not found'})
+        return res.status(404).send({error: 'Task not found'})
       }
 
-      task.remove()
-
+      await task.remove()
       res.send({message: 'Task remove succesfully'})
     } catch (e) {
-      res.status(404).send('Task not found')
+      res.status(500).send({e})
     }
 })
 

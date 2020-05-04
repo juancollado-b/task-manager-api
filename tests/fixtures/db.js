@@ -52,6 +52,7 @@ const setUpDataBase = async () => {
     await User.deleteMany()
     await Task.deleteMany()
     await new User(userOne).save()
+    await new User(userTwo).save()
     await new Task(taskOne).save()
     await new Task(taskTwo).save()
     await new Task(taskThird).save()
