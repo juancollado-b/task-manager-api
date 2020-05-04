@@ -117,3 +117,11 @@ test(`Update user's fileds`, async () => {
     expect(user.name).toBe('Ramiro')
     expect(user.email).toBe('ramita@email.com')
 })
+
+test(`Update user's fields [not allow update error]`, async () => {
+    await request(app)
+    .patch('/users/me')
+    .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+    .send({location:'Argentina'})
+    .expect(400)
+})
