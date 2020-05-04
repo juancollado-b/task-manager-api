@@ -17,3 +17,12 @@ test('Create Task', async () => {
     const task = Task.findById(response.body._id)
     expect(task).not.toBeNull()
 })
+
+test('Get all task of an user', async () => {
+    const response = await request(app)
+    .get('/tasks')
+    .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+    .expect(200)
+    
+    expect(response.body.length).toEqual(2)
+})
